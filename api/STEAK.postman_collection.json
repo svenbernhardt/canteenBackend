@@ -1,0 +1,357 @@
+{
+	"variables": [],
+	"info": {
+		"name": "STEAK",
+		"_postman_id": "bed67601-d77f-5f58-64a8-6cd88946e03d",
+		"description": "Kantinen-API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "me",
+			"description": "Folder for me",
+			"item": [
+				{
+					"name": "User Profile",
+					"request": {
+						"url": "{{protocol}}{{host}}{{prefix}}/v0.2/me",
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": "Gibt das Benutzerprofil zurueck"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "offers",
+			"description": "Folder for offers",
+			"item": [
+				{
+					"name": "Offer[]",
+					"request": {
+						"url": "{{protocol}}{{host}}{{prefix}}/v0.2/offers?startdate=2015-05-05",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "x-auth-username",
+								"value": "bts",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic dHVzOkRpcGxvbTIwMTch",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": "..."
+					},
+					"response": []
+				},
+				{
+					"name": "Create new Offer",
+					"request": {
+						"url": "{{protocol}}{{host}}{{prefix}}/v0.2/offers",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "x-auth-username",
+								"value": "bts",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic dHVzOkRpcGxvbTIwMTch",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n        \"description\": \"Wirsingeintopf mit Mettenden und durchw. Speck\",\n        \"vegetarian\": false,\n        \"price\": 5.50,\n        \"time\": \"Mittag\",\n        \"date\": \"2017-05-11\",\n        \"main_offer\": false,\n        \"heat\": 80\n}"
+						},
+						"description": "..."
+					},
+					"response": []
+				},
+				{
+					"name": "Offer",
+					"request": {
+						"url": "{{protocol}}{{host}}{{prefix}}/v0.2/offers/58a47bd88fdd83084b5c88a2",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "x-auth-username",
+								"value": "bts",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic dHVzOkRpcGxvbTIwMTch",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": "..."
+					},
+					"response": []
+				},
+				{
+					"name": "OfferPut",
+					"request": {
+						"url": "{{protocol}}{{host}}{{prefix}}/v0.2/offers",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "x-auth-username",
+								"value": "bts",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic dHVzOkRpcGxvbTIwMTch",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n        \"description\": \"Wirsingeintopf mit Mettenden und durchw. Speck\",\n        \"vegetarian\": false,\n        \"price\": 5,\n        \"time\": \"Mittag\",\n        \"date\": \"2013-05-11\",\n        \"main_offer\": false,\n        \"heat\": 80\n}"
+						},
+						"description": "Updates the Offer specified by the ID in the path"
+					},
+					"response": []
+				},
+				{
+					"name": "OfferDELETE",
+					"request": {
+						"url": "{{protocol}}{{host}}{{prefix}}/v0.2/offers/58a47bd88fdd83084b5c88a2",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "x-auth-username",
+								"value": "bts",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic dHVzOkRpcGxvbTIwMTch",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": "Deletes the Offer specified by the ID in the path"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "orders",
+			"description": "Folder for orders",
+			"item": [
+				{
+					"name": "Order[]",
+					"request": {
+						"url": "{{protocol}}{{host}}{{prefix}}/v0.2/orders?enddate=2017-05-05&open_payments=true&userid=bts",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "x-auth-username",
+								"value": "bts",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic dHVzOkRpcGxvbTIwMTch",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": "Alle Bestellungen"
+					},
+					"response": []
+				},
+				{
+					"name": "Create new order",
+					"request": {
+						"url": "{{protocol}}{{host}}{{prefix}}/v0.2/orders",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "x-auth-username",
+								"value": "bts",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic dHVzOkRpcGxvbTIwMTch",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"takeaway_flag\": false,\n\t\"offer_id\": \"58a47bd88fdd83084b5c8bfa\"\n}"
+						},
+						"description": "..."
+					},
+					"response": []
+				},
+				{
+					"name": "OrderGET",
+					"request": {
+						"url": "{{protocol}}{{host}}{{prefix}}/v0.2/orders/:orderid",
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": "..."
+					},
+					"response": []
+				},
+				{
+					"name": "OrderPut",
+					"request": {
+						"url": "{{protocol}}{{host}}{{prefix}}/v0.2/orders/:orderid",
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "..."
+						},
+						"description": "Updates the Order specified by the ID in the path"
+					},
+					"response": []
+				},
+				{
+					"name": "OrderDELETE",
+					"request": {
+						"url": "{{protocol}}{{host}}{{prefix}}/v0.2/orders/:orderid",
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": "Deletes the Order specified by the ID in the path"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "users",
+			"description": "Folder for users",
+			"item": [
+				{
+					"name": "User[]",
+					"request": {
+						"url": "{{protocol}}{{host}}{{prefix}}/v0.2/users",
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": "Returns a list of user objects"
+					},
+					"response": []
+				},
+				{
+					"name": "User",
+					"request": {
+						"url": "{{protocol}}{{host}}{{prefix}}/v0.2/users/bts",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "x-auth-username",
+								"value": "bts",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic dHVzOkRpcGxvbTIwMTch",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": "Returns the User Object"
+					},
+					"response": []
+				},
+				{
+					"name": "OfferOrdersPair[]",
+					"request": {
+						"url": "{{protocol}}{{host}}{{prefix}}/v0.2/users/bts/offersordersoverview/date/2015-06-05",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "x-auth-username",
+								"value": "bts",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic dHVzOkRpcGxvbTIwMTch",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": "Returns an array of offer and orders pairs. Each element is an offer plus a list of all the orders for a specific user"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

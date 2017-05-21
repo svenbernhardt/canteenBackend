@@ -1,0 +1,501 @@
+# this is an example of the Uber API
+# as a demonstration of an API spec in YAML
+swagger: '2.0'
+info:
+  title: Canteen API
+  description: The API to be used with newly created Canteen Apps. The API provides functionalities for consumers to order meals and for the backoffice team to add new offers. 
+  version: "0.0.2"
+# the domain of the service
+host: vsdlgm205.opitz-consulting.int
+# array of all schemes that your API supports
+# http ist nur zu Testzwecken enthalten
+schemes:
+  - https
+# will be prefixed to all paths
+basePath: /v0.2
+produces:
+  - application/json
+paths:
+  /me:
+      parameters:
+          - $ref: '#/parameters/username'
+      get:
+        summary: Get my Profile
+        description: Returns the user profile of the current user
+        operationId: "meGET"
+        tags:
+          - Users
+        responses:
+          200:
+            description: Profile information for a user
+            schema:
+              $ref: '#/definitions/User'
+          default:
+            description: Unexpected error
+            schema:
+              $ref: '#/definitions/Error'
+        x-swagger-router-controller: "Me"
+  /users:
+    parameters:
+      - $ref: '#/parameters/username'
+      - $ref: '#/parameters/openPaymentsParam'
+    get:
+      summary: Get all Users
+      description: Returns a list of all users 
+      operationId: "userGetMany"
+      tags:
+        - Users
+      responses:
+        200:
+          description: Result
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/User'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    x-swagger-router-controller: "User"
+  /users/{useridpath}:
+    parameters:
+      - $ref: '#/parameters/username'
+      - $ref: '#/parameters/useridpath'
+    get:
+      summary: Get User
+      description: Returns the information for a specific User
+      operationId: "userGet"
+      tags:
+        - Users
+      responses:
+        200:
+          description: Result
+          schema:
+            $ref: '#/definitions/User'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    x-swagger-router-controller: "User"
+  /users/{useridpath}/offersordersoverview/date/{datepath}:
+    parameters:
+      - $ref: '#/parameters/username'
+      - $ref: '#/parameters/useridpath'
+      - $ref: '#/parameters/datepath'
+    get:
+      summary: Get Offer and Orders
+      description: Returns an array of offer and orders pairs. Each element is an offer plus a list of all the orders for a specific user
+      operationId: "offersOrdersGET"
+      tags:
+      - Users
+      responses:
+        200:
+          description: Result
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/OfferOrdersPair'
+      x-swagger-router-controller: "User"
+  /orders:
+    parameters:
+        - $ref: '#/parameters/username'
+    get:
+      summary: Get all offers
+      description: Query and return all offers
+      parameters:
+        - $ref: '#/parameters/startdate'
+        - $ref: '#/parameters/date'
+        - $ref: '#/parameters/enddate'
+        - $ref: '#/parameters/userid'
+        - $ref: '#/parameters/cursorParam'
+        - $ref: '#/parameters/limitParam'
+        - $ref: '#/parameters/openPaymentsParam'
+      operationId: "ordersGET"
+      tags:
+        - Orders
+      responses:
+        200:
+          description: Orders
+          schema:
+            type: array
+            items:
+             $ref: '#/definitions/Order'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      x-swagger-router-controller: "Order"
+    post:
+      summary: Create order
+      description: Place a new order
+      operationId: "orderPost"
+      parameters:
+        - name: OrderBooking
+          in: body
+          description: ...
+          required: true
+          schema:
+            $ref: '#/definitions/OrderBooking'
+      tags:
+        - Orders
+      responses:
+        200:
+          description: The new Order
+          schema:
+            $ref: '#/definitions/Order'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      x-swagger-router-controller: "Order"
+  /orders/{orderid}:
+    parameters:
+      - $ref: '#/parameters/username'
+      - $ref: '#/parameters/orderid'
+    get:
+      summary: Get an Order
+      description: Get a specific user
+      operationId: "orderGetOne"
+      tags:
+        - Orders
+      responses:
+        200:
+          description: Get one order by ID
+          schema:
+             $ref: '#/definitions/Order'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      x-swagger-router-controller: "Order"
+    put:
+      summary: Update Order
+      description: Updates the Order specified by the ID in the path
+      operationId: "orderPut"
+      parameters:
+        - name: orderData
+          in: body
+          description: ...
+          required: true
+          schema:
+            $ref: '#/definitions/Order'
+      tags:
+        - Orders
+      responses:
+        200:
+          description: The updated Object
+          schema:
+            $ref: '#/definitions/Order'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      x-swagger-router-controller: "Order"
+    delete:
+      summary: Delete Order
+      description: Deletes the Order specified by the ID in the path
+      operationId: "orderDelete"
+      tags:
+        - Orders
+      responses:
+        204:
+          description: Empty
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      x-swagger-router-controller: "Order"
+  /offers:
+    parameters:
+        - $ref: '#/parameters/username'
+    get:
+      summary: Get Offers
+      description: Get all current Offers
+      operationId: "offerGet"
+      parameters:
+        - $ref: '#/parameters/date'
+        - $ref: '#/parameters/startdate'
+        - $ref: '#/parameters/enddate'
+      tags:
+        - Offers
+      responses:
+        200:
+          description: Get all Offers, filtered by query params
+          schema:
+            type: array
+            items:
+             $ref: '#/definitions/Offer'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      x-swagger-router-controller: "Offer"
+    post:
+      summary: Create new Offer
+      description: Create a new offer for a specific User
+      operationId: "offerPost"
+      parameters:
+        - name: offerData
+          in: body
+          description: ...
+          required: true
+          schema:
+            $ref: '#/definitions/Offer'
+      tags:
+        - Offers
+      responses:
+        200:
+          description: The new offer
+          schema:
+            $ref: '#/definitions/Offer'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      x-swagger-router-controller: "Offer"
+
+  /offers/{offerid}:
+    parameters:
+        - $ref: '#/parameters/username'
+        - $ref: '#/parameters/offerid'
+
+    get:
+      summary: Get Offer
+      description: Get a specific Order
+      operationId: "offerGetOne"
+      tags:
+        - Offers
+      responses:
+        200:
+          description: Get one offer by ID
+          schema:
+             $ref: '#/definitions/Offer'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      x-swagger-router-controller: "Offer"
+    put:
+      summary: Update Offer
+      description: Updates the Offer specified by the ID in the path
+      operationId: "offerPut"
+      parameters:
+        - name: offerData
+          in: body
+          description: ...
+          required: true
+          schema:
+            $ref: '#/definitions/Offer'
+      tags:
+        - Offers
+      responses:
+        200:
+          description: The updated Object
+          schema:
+            $ref: '#/definitions/Offer'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      x-swagger-router-controller: "Offer"
+    delete:
+      summary: Delete Offer
+      description: Deletes the Offer specified by the ID in the path
+      operationId: "offerDelete"
+      tags:
+        - Offers
+      responses:
+        204:
+          description: Empty
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      x-swagger-router-controller: "Offer"
+definitions:
+  User:
+    type: object
+    required:
+      - employee_id
+      - open_payments_sum
+    properties:
+      employee_id:
+        type: string
+        description: The three letter shortcut code for the employee
+      open_payments_sum:
+        type: number
+        format: float
+      offersordersoverview_url:
+        type: string
+  Offer:
+    type: object
+    description: A description for an offer, usually a dish, salad, etc.
+    required:
+     - description
+     - price
+     - time
+     - main_offer
+     - vegetarian
+     - heat
+     - date
+    properties:
+      description:
+        type: string
+        description: ...
+      _id:
+        type: string
+        description: ...
+      price:
+        type: number
+        format: float
+        description: ...
+      date:
+        type: string
+        format: date
+        description: ...
+      time:
+        type: string
+        description: Frühstück / Mittags
+      main_offer:
+        type: boolean
+        description: Main meal or side dish. Side dishes would be a salad or a soup, eggs in the morning, ...
+      vegetarian:
+        type: boolean
+        description: ...
+      heat:
+        type: number
+        description: Describes the heat at which the offer was cooked. Needed for health governance
+  OrderBooking:
+    type: object
+    properties:
+      offer_id:
+        type: string
+      takeaway_flag:
+        type: boolean
+
+  Order:
+    type: object
+    required:
+      - employee_id
+      - takeaway_flag
+      - offer
+      - paid
+      - amount
+    properties:
+      _id:
+        type: string
+        description: The ID given by the database
+      employee_id:
+        type: string
+        description: ...
+      offer:
+        $ref: '#/definitions/Offer'
+      takeaway_flag:
+        type: boolean
+        description: Is takeaway
+      date:
+        type: string
+        format: date
+        description: ...
+      amount:
+        type: number
+        format: float
+        description: The price paid by the employee. some pay less because of their status.
+      paid:
+        type: boolean
+        description: ...
+  OfferOrdersPair:
+    type: object
+    required:
+      - offer
+      - orders
+    properties:
+      offer:
+        $ref: '#/definitions/Offer'
+      orders:
+        type: array
+        items:
+          $ref: '#/definitions/Order'
+  Error:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      fields:
+        type: string
+parameters:
+  useridpath:
+    name: useridpath
+    type: string
+    description: The user id for which to fetch data
+    in: path
+    required: true
+  userid:
+    name: userid
+    type: string
+    description: The user id for which to fetch data
+    in: query
+    required: false
+  username:
+    name: x-auth-username
+    description: The username of the user that is performing the request
+    type: string
+    in: header
+    required: true
+  date:
+    name: date
+    type: string
+    format: date
+    in: query
+    required: false
+  datepath:
+    name: datepath
+    type: string
+    format: date
+    in: path
+    required: true
+  offerid:
+    name: offerid
+    type: string
+    description: The ID for the offer, given by the DB
+    in: path
+    required: true
+  orderid:
+    name: orderid
+    type: string
+    description: The ID for the order, given by the DB
+    in: path
+    required: true
+  startdate:
+    name: startdate
+    type: string
+    format: date
+    in: query
+    required: false
+  enddate:
+    name: enddate
+    type: string
+    format: date
+    in: query
+    required: false
+  cursorParam:
+    name: cursor
+    in: query
+    description: "Pagination cursor. If there is not a limit defined, each cursor result gives back 30 results"
+    required: false
+    type: string
+  limitParam:
+    name: limit
+    in: query
+    description: Result limiter.
+    required: false
+    type: integer
+  openPaymentsParam:
+    name: open_payments
+    in: query
+    description: "A flag that can be set to true to only get employees with open payments"
+    type: boolean
+    required: false

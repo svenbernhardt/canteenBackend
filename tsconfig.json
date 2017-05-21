@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "rootDir": "./src",
+        "module": "commonjs",
+        "target": "ES6",
+        "outDir": "./dist",
+        "noImplicitAny": false,
+        "sourceMap": true,
+        "noEmitOnError": true,
+        "declaration": true
+    },
+    "exclude": [
+        "node_modules",
+        "dist",
+        "mockData"
+    ]
+}

@@ -1,0 +1,1370 @@
+FORMAT: 1A
+
+# Canteen API
+
+The API to be used with newly created Canteen Apps. The API provides functionalities for consumers to order meals and for the backoffice team to add new offers.
+
+## Group Users
+
+### /v0.2/me
+
+#### Get my Profile [GET]
+
+Returns the user profile of the current user
+
++ Request
+
+    + Headers
+
+            Accept: application/json
+            x-auth-username: 
+
+    + Body
+
++ Response 200 (application/json)
+
+    Profile information for a user
+
+    + Body
+
+            {
+              "employee_id": "cupidatat",
+              "open_payments_sum": 19569103
+            }
+
+    + Schema
+
+            {
+              "type": "object",
+              "required": [
+                "employee_id",
+                "open_payments_sum"
+              ],
+              "properties": {
+                "employee_id": {
+                  "type": "string",
+                  "description": "The three letter shortcut code for the employee"
+                },
+                "open_payments_sum": {
+                  "type": "number",
+                  "format": "float"
+                },
+                "offersordersoverview_url": {
+                  "type": "string"
+                }
+              }
+            }
+
+### /v0.2/users{?open_payments}
+
++ Parameters
+
+    + open_payments
+
+#### Get all Users [GET]
+
+Returns a list of all users
+
++ Request
+
+    + Headers
+
+            Accept: application/json
+            x-auth-username: 
+
+    + Body
+
++ Response 200 (application/json)
+
+    Result
+
+    + Body
+
+            [
+              {
+                "employee_id": "amet Lorem",
+                "open_payments_sum": 99275008
+              },
+              {
+                "employee_id": "incididunt in",
+                "open_payments_sum": 36411190,
+                "offersordersoverview_url": "tempor culpa adipisicing"
+              }
+            ]
+
+    + Schema
+
+            {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "employee_id",
+                  "open_payments_sum"
+                ],
+                "properties": {
+                  "employee_id": {
+                    "type": "string",
+                    "description": "The three letter shortcut code for the employee"
+                  },
+                  "open_payments_sum": {
+                    "type": "number",
+                    "format": "float"
+                  },
+                  "offersordersoverview_url": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+
+### /v0.2/users/{useridpath}
+
++ Parameters
+
+    + useridpath (required)
+
+#### Get User [GET]
+
+Returns the information for a specific User
+
++ Request
+
+    + Headers
+
+            Accept: application/json
+            x-auth-username: 
+
+    + Body
+
++ Response 200 (application/json)
+
+    Result
+
+    + Body
+
+            {
+              "employee_id": "dolore laboris dolor",
+              "open_payments_sum": -81474016
+            }
+
+    + Schema
+
+            {
+              "type": "object",
+              "required": [
+                "employee_id",
+                "open_payments_sum"
+              ],
+              "properties": {
+                "employee_id": {
+                  "type": "string",
+                  "description": "The three letter shortcut code for the employee"
+                },
+                "open_payments_sum": {
+                  "type": "number",
+                  "format": "float"
+                },
+                "offersordersoverview_url": {
+                  "type": "string"
+                }
+              }
+            }
+
+### /v0.2/users/{useridpath}/offersordersoverview/date/{datepath}
+
++ Parameters
+
+    + useridpath (required)
+    
+    + datepath (required)
+
+#### Get Offer and Orders [GET]
+
+Returns an array of offer and orders pairs. Each element is an offer plus a list of all the orders for a specific user
+
++ Request
+
+    + Headers
+
+            Accept: application/json
+            x-auth-username: 
+
+    + Body
+
++ Response 200 (application/json)
+
+    Result
+
+    + Body
+
+    + Schema
+
+            {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "offer",
+                  "orders"
+                ],
+                "properties": {
+                  "offer": {
+                    "type": "object",
+                    "description": "A description for an offer, usually a dish, salad, etc.",
+                    "required": [
+                      "description",
+                      "price",
+                      "time",
+                      "main_offer",
+                      "vegetarian",
+                      "heat",
+                      "date"
+                    ],
+                    "properties": {
+                      "description": {
+                        "type": "string",
+                        "description": "..."
+                      },
+                      "_id": {
+                        "type": "string",
+                        "description": "..."
+                      },
+                      "price": {
+                        "type": "number",
+                        "format": "float",
+                        "description": "..."
+                      },
+                      "date": {
+                        "type": "string",
+                        "format": "date",
+                        "description": "..."
+                      },
+                      "time": {
+                        "type": "string",
+                        "description": "Frühstück / Mittags"
+                      },
+                      "main_offer": {
+                        "type": "boolean",
+                        "description": "Main meal or side dish. Side dishes would be a salad or a soup, eggs in the morning, ..."
+                      },
+                      "vegetarian": {
+                        "type": "boolean",
+                        "description": "..."
+                      },
+                      "heat": {
+                        "type": "number",
+                        "description": "Describes the heat at which the offer was cooked. Needed for health governance"
+                      }
+                    }
+                  },
+                  "orders": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "employee_id",
+                        "takeaway_flag",
+                        "offer",
+                        "paid",
+                        "amount"
+                      ],
+                      "properties": {
+                        "_id": {
+                          "type": "string",
+                          "description": "The ID given by the database"
+                        },
+                        "employee_id": {
+                          "type": "string",
+                          "description": "..."
+                        },
+                        "offer": {
+                          "type": "object",
+                          "description": "A description for an offer, usually a dish, salad, etc.",
+                          "required": [
+                            "description",
+                            "price",
+                            "time",
+                            "main_offer",
+                            "vegetarian",
+                            "heat",
+                            "date"
+                          ],
+                          "properties": {
+                            "description": {
+                              "type": "string",
+                              "description": "..."
+                            },
+                            "_id": {
+                              "type": "string",
+                              "description": "..."
+                            },
+                            "price": {
+                              "type": "number",
+                              "format": "float",
+                              "description": "..."
+                            },
+                            "date": {
+                              "type": "string",
+                              "format": "date",
+                              "description": "..."
+                            },
+                            "time": {
+                              "type": "string",
+                              "description": "Frühstück / Mittags"
+                            },
+                            "main_offer": {
+                              "type": "boolean",
+                              "description": "Main meal or side dish. Side dishes would be a salad or a soup, eggs in the morning, ..."
+                            },
+                            "vegetarian": {
+                              "type": "boolean",
+                              "description": "..."
+                            },
+                            "heat": {
+                              "type": "number",
+                              "description": "Describes the heat at which the offer was cooked. Needed for health governance"
+                            }
+                          }
+                        },
+                        "takeaway_flag": {
+                          "type": "boolean",
+                          "description": "Is takeaway"
+                        },
+                        "date": {
+                          "type": "string",
+                          "format": "date",
+                          "description": "..."
+                        },
+                        "amount": {
+                          "type": "number",
+                          "format": "float",
+                          "description": "The price paid by the employee. some pay less because of their status."
+                        },
+                        "paid": {
+                          "type": "boolean",
+                          "description": "..."
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+
+## Group Orders
+
+### /v0.2/orders
+
+#### Get all offers [GET /v0.2/orders{?startdate,date,enddate,userid,cursor,limit,open_payments}]
+
+Query and return all offers
+
++ Parameters
+
+    + startdate
+    
+    + date
+    
+    + enddate
+    
+    + userid
+    
+    + cursor
+    
+    + limit
+    
+    + open_payments
+
++ Request
+
+    + Headers
+
+            Accept: application/json
+            x-auth-username: 
+
+    + Body
+
++ Response 200 (application/json)
+
+    Orders
+
+    + Body
+
+    + Schema
+
+            {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "employee_id",
+                  "takeaway_flag",
+                  "offer",
+                  "paid",
+                  "amount"
+                ],
+                "properties": {
+                  "_id": {
+                    "type": "string",
+                    "description": "The ID given by the database"
+                  },
+                  "employee_id": {
+                    "type": "string",
+                    "description": "..."
+                  },
+                  "offer": {
+                    "type": "object",
+                    "description": "A description for an offer, usually a dish, salad, etc.",
+                    "required": [
+                      "description",
+                      "price",
+                      "time",
+                      "main_offer",
+                      "vegetarian",
+                      "heat",
+                      "date"
+                    ],
+                    "properties": {
+                      "description": {
+                        "type": "string",
+                        "description": "..."
+                      },
+                      "_id": {
+                        "type": "string",
+                        "description": "..."
+                      },
+                      "price": {
+                        "type": "number",
+                        "format": "float",
+                        "description": "..."
+                      },
+                      "date": {
+                        "type": "string",
+                        "format": "date",
+                        "description": "..."
+                      },
+                      "time": {
+                        "type": "string",
+                        "description": "Frühstück / Mittags"
+                      },
+                      "main_offer": {
+                        "type": "boolean",
+                        "description": "Main meal or side dish. Side dishes would be a salad or a soup, eggs in the morning, ..."
+                      },
+                      "vegetarian": {
+                        "type": "boolean",
+                        "description": "..."
+                      },
+                      "heat": {
+                        "type": "number",
+                        "description": "Describes the heat at which the offer was cooked. Needed for health governance"
+                      }
+                    }
+                  },
+                  "takeaway_flag": {
+                    "type": "boolean",
+                    "description": "Is takeaway"
+                  },
+                  "date": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "..."
+                  },
+                  "amount": {
+                    "type": "number",
+                    "format": "float",
+                    "description": "The price paid by the employee. some pay less because of their status."
+                  },
+                  "paid": {
+                    "type": "boolean",
+                    "description": "..."
+                  }
+                }
+              }
+            }
+
+#### Create order [POST]
+
+Place a new order
+
++ Request
+
+    + Headers
+
+            Accept: application/json
+            x-auth-username: 
+
+    + Body
+
+    + Schema
+
+            {
+              "type": "object",
+              "properties": {
+                "offer_id": {
+                  "type": "string"
+                },
+                "takeaway_flag": {
+                  "type": "boolean"
+                }
+              }
+            }
+
++ Response 200 (application/json)
+
+    The new Order
+
+    + Body
+
+    + Schema
+
+            {
+              "type": "object",
+              "required": [
+                "employee_id",
+                "takeaway_flag",
+                "offer",
+                "paid",
+                "amount"
+              ],
+              "properties": {
+                "_id": {
+                  "type": "string",
+                  "description": "The ID given by the database"
+                },
+                "employee_id": {
+                  "type": "string",
+                  "description": "..."
+                },
+                "offer": {
+                  "type": "object",
+                  "description": "A description for an offer, usually a dish, salad, etc.",
+                  "required": [
+                    "description",
+                    "price",
+                    "time",
+                    "main_offer",
+                    "vegetarian",
+                    "heat",
+                    "date"
+                  ],
+                  "properties": {
+                    "description": {
+                      "type": "string",
+                      "description": "..."
+                    },
+                    "_id": {
+                      "type": "string",
+                      "description": "..."
+                    },
+                    "price": {
+                      "type": "number",
+                      "format": "float",
+                      "description": "..."
+                    },
+                    "date": {
+                      "type": "string",
+                      "format": "date",
+                      "description": "..."
+                    },
+                    "time": {
+                      "type": "string",
+                      "description": "Frühstück / Mittags"
+                    },
+                    "main_offer": {
+                      "type": "boolean",
+                      "description": "Main meal or side dish. Side dishes would be a salad or a soup, eggs in the morning, ..."
+                    },
+                    "vegetarian": {
+                      "type": "boolean",
+                      "description": "..."
+                    },
+                    "heat": {
+                      "type": "number",
+                      "description": "Describes the heat at which the offer was cooked. Needed for health governance"
+                    }
+                  }
+                },
+                "takeaway_flag": {
+                  "type": "boolean",
+                  "description": "Is takeaway"
+                },
+                "date": {
+                  "type": "string",
+                  "format": "date",
+                  "description": "..."
+                },
+                "amount": {
+                  "type": "number",
+                  "format": "float",
+                  "description": "The price paid by the employee. some pay less because of their status."
+                },
+                "paid": {
+                  "type": "boolean",
+                  "description": "..."
+                }
+              }
+            }
+
+### /v0.2/orders/{orderid}
+
++ Parameters
+
+    + orderid (required)
+
+#### Get an Order [GET]
+
+Get a specific user
+
++ Request
+
+    + Headers
+
+            Accept: application/json
+            x-auth-username: 
+
+    + Body
+
++ Response 200 (application/json)
+
+    Get one order by ID
+
+    + Body
+
+    + Schema
+
+            {
+              "type": "object",
+              "required": [
+                "employee_id",
+                "takeaway_flag",
+                "offer",
+                "paid",
+                "amount"
+              ],
+              "properties": {
+                "_id": {
+                  "type": "string",
+                  "description": "The ID given by the database"
+                },
+                "employee_id": {
+                  "type": "string",
+                  "description": "..."
+                },
+                "offer": {
+                  "type": "object",
+                  "description": "A description for an offer, usually a dish, salad, etc.",
+                  "required": [
+                    "description",
+                    "price",
+                    "time",
+                    "main_offer",
+                    "vegetarian",
+                    "heat",
+                    "date"
+                  ],
+                  "properties": {
+                    "description": {
+                      "type": "string",
+                      "description": "..."
+                    },
+                    "_id": {
+                      "type": "string",
+                      "description": "..."
+                    },
+                    "price": {
+                      "type": "number",
+                      "format": "float",
+                      "description": "..."
+                    },
+                    "date": {
+                      "type": "string",
+                      "format": "date",
+                      "description": "..."
+                    },
+                    "time": {
+                      "type": "string",
+                      "description": "Frühstück / Mittags"
+                    },
+                    "main_offer": {
+                      "type": "boolean",
+                      "description": "Main meal or side dish. Side dishes would be a salad or a soup, eggs in the morning, ..."
+                    },
+                    "vegetarian": {
+                      "type": "boolean",
+                      "description": "..."
+                    },
+                    "heat": {
+                      "type": "number",
+                      "description": "Describes the heat at which the offer was cooked. Needed for health governance"
+                    }
+                  }
+                },
+                "takeaway_flag": {
+                  "type": "boolean",
+                  "description": "Is takeaway"
+                },
+                "date": {
+                  "type": "string",
+                  "format": "date",
+                  "description": "..."
+                },
+                "amount": {
+                  "type": "number",
+                  "format": "float",
+                  "description": "The price paid by the employee. some pay less because of their status."
+                },
+                "paid": {
+                  "type": "boolean",
+                  "description": "..."
+                }
+              }
+            }
+
+#### Update Order [PUT]
+
+Updates the Order specified by the ID in the path
+
++ Request
+
+    + Headers
+
+            Accept: application/json
+            x-auth-username: 
+
+    + Body
+
+    + Schema
+
+            {
+              "type": "object",
+              "required": [
+                "employee_id",
+                "takeaway_flag",
+                "offer",
+                "paid",
+                "amount"
+              ],
+              "properties": {
+                "_id": {
+                  "type": "string",
+                  "description": "The ID given by the database"
+                },
+                "employee_id": {
+                  "type": "string",
+                  "description": "..."
+                },
+                "offer": {
+                  "type": "object",
+                  "description": "A description for an offer, usually a dish, salad, etc.",
+                  "required": [
+                    "description",
+                    "price",
+                    "time",
+                    "main_offer",
+                    "vegetarian",
+                    "heat",
+                    "date"
+                  ],
+                  "properties": {
+                    "description": {
+                      "type": "string",
+                      "description": "..."
+                    },
+                    "_id": {
+                      "type": "string",
+                      "description": "..."
+                    },
+                    "price": {
+                      "type": "number",
+                      "format": "float",
+                      "description": "..."
+                    },
+                    "date": {
+                      "type": "string",
+                      "format": "date",
+                      "description": "..."
+                    },
+                    "time": {
+                      "type": "string",
+                      "description": "Frühstück / Mittags"
+                    },
+                    "main_offer": {
+                      "type": "boolean",
+                      "description": "Main meal or side dish. Side dishes would be a salad or a soup, eggs in the morning, ..."
+                    },
+                    "vegetarian": {
+                      "type": "boolean",
+                      "description": "..."
+                    },
+                    "heat": {
+                      "type": "number",
+                      "description": "Describes the heat at which the offer was cooked. Needed for health governance"
+                    }
+                  }
+                },
+                "takeaway_flag": {
+                  "type": "boolean",
+                  "description": "Is takeaway"
+                },
+                "date": {
+                  "type": "string",
+                  "format": "date",
+                  "description": "..."
+                },
+                "amount": {
+                  "type": "number",
+                  "format": "float",
+                  "description": "The price paid by the employee. some pay less because of their status."
+                },
+                "paid": {
+                  "type": "boolean",
+                  "description": "..."
+                }
+              }
+            }
+
++ Response 200 (application/json)
+
+    The updated Object
+
+    + Body
+
+    + Schema
+
+            {
+              "type": "object",
+              "required": [
+                "employee_id",
+                "takeaway_flag",
+                "offer",
+                "paid",
+                "amount"
+              ],
+              "properties": {
+                "_id": {
+                  "type": "string",
+                  "description": "The ID given by the database"
+                },
+                "employee_id": {
+                  "type": "string",
+                  "description": "..."
+                },
+                "offer": {
+                  "type": "object",
+                  "description": "A description for an offer, usually a dish, salad, etc.",
+                  "required": [
+                    "description",
+                    "price",
+                    "time",
+                    "main_offer",
+                    "vegetarian",
+                    "heat",
+                    "date"
+                  ],
+                  "properties": {
+                    "description": {
+                      "type": "string",
+                      "description": "..."
+                    },
+                    "_id": {
+                      "type": "string",
+                      "description": "..."
+                    },
+                    "price": {
+                      "type": "number",
+                      "format": "float",
+                      "description": "..."
+                    },
+                    "date": {
+                      "type": "string",
+                      "format": "date",
+                      "description": "..."
+                    },
+                    "time": {
+                      "type": "string",
+                      "description": "Frühstück / Mittags"
+                    },
+                    "main_offer": {
+                      "type": "boolean",
+                      "description": "Main meal or side dish. Side dishes would be a salad or a soup, eggs in the morning, ..."
+                    },
+                    "vegetarian": {
+                      "type": "boolean",
+                      "description": "..."
+                    },
+                    "heat": {
+                      "type": "number",
+                      "description": "Describes the heat at which the offer was cooked. Needed for health governance"
+                    }
+                  }
+                },
+                "takeaway_flag": {
+                  "type": "boolean",
+                  "description": "Is takeaway"
+                },
+                "date": {
+                  "type": "string",
+                  "format": "date",
+                  "description": "..."
+                },
+                "amount": {
+                  "type": "number",
+                  "format": "float",
+                  "description": "The price paid by the employee. some pay less because of their status."
+                },
+                "paid": {
+                  "type": "boolean",
+                  "description": "..."
+                }
+              }
+            }
+
+#### Delete Order [DELETE]
+
+Deletes the Order specified by the ID in the path
+
++ Request
+
+    + Headers
+
+            Accept: application/json
+            x-auth-username: 
+
+    + Body
+
++ Response 204 (application/json)
+
+    Empty
+
+    + Body
+
+## Group Offers
+
+### /v0.2/offers
+
+#### Get Offers [GET /v0.2/offers{?date,startdate,enddate}]
+
+Get all current Offers
+
++ Parameters
+
+    + date
+    
+    + startdate
+    
+    + enddate
+
++ Request
+
+    + Headers
+
+            Accept: application/json
+            x-auth-username: 
+
+    + Body
+
++ Response 200 (application/json)
+
+    Get all Offers, filtered by query params
+
+    + Body
+
+    + Schema
+
+            {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "description": "A description for an offer, usually a dish, salad, etc.",
+                "required": [
+                  "description",
+                  "price",
+                  "time",
+                  "main_offer",
+                  "vegetarian",
+                  "heat",
+                  "date"
+                ],
+                "properties": {
+                  "description": {
+                    "type": "string",
+                    "description": "..."
+                  },
+                  "_id": {
+                    "type": "string",
+                    "description": "..."
+                  },
+                  "price": {
+                    "type": "number",
+                    "format": "float",
+                    "description": "..."
+                  },
+                  "date": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "..."
+                  },
+                  "time": {
+                    "type": "string",
+                    "description": "Frühstück / Mittags"
+                  },
+                  "main_offer": {
+                    "type": "boolean",
+                    "description": "Main meal or side dish. Side dishes would be a salad or a soup, eggs in the morning, ..."
+                  },
+                  "vegetarian": {
+                    "type": "boolean",
+                    "description": "..."
+                  },
+                  "heat": {
+                    "type": "number",
+                    "description": "Describes the heat at which the offer was cooked. Needed for health governance"
+                  }
+                }
+              }
+            }
+
+#### Create new Offer [POST]
+
+Create a new offer for a specific User
+
++ Request
+
+    + Headers
+
+            Accept: application/json
+            x-auth-username: 
+
+    + Body
+
+    + Schema
+
+            {
+              "type": "object",
+              "description": "A description for an offer, usually a dish, salad, etc.",
+              "required": [
+                "description",
+                "price",
+                "time",
+                "main_offer",
+                "vegetarian",
+                "heat",
+                "date"
+              ],
+              "properties": {
+                "description": {
+                  "type": "string",
+                  "description": "..."
+                },
+                "_id": {
+                  "type": "string",
+                  "description": "..."
+                },
+                "price": {
+                  "type": "number",
+                  "format": "float",
+                  "description": "..."
+                },
+                "date": {
+                  "type": "string",
+                  "format": "date",
+                  "description": "..."
+                },
+                "time": {
+                  "type": "string",
+                  "description": "Frühstück / Mittags"
+                },
+                "main_offer": {
+                  "type": "boolean",
+                  "description": "Main meal or side dish. Side dishes would be a salad or a soup, eggs in the morning, ..."
+                },
+                "vegetarian": {
+                  "type": "boolean",
+                  "description": "..."
+                },
+                "heat": {
+                  "type": "number",
+                  "description": "Describes the heat at which the offer was cooked. Needed for health governance"
+                }
+              }
+            }
+
++ Response 200 (application/json)
+
+    The new offer
+
+    + Body
+
+    + Schema
+
+            {
+              "type": "object",
+              "description": "A description for an offer, usually a dish, salad, etc.",
+              "required": [
+                "description",
+                "price",
+                "time",
+                "main_offer",
+                "vegetarian",
+                "heat",
+                "date"
+              ],
+              "properties": {
+                "description": {
+                  "type": "string",
+                  "description": "..."
+                },
+                "_id": {
+                  "type": "string",
+                  "description": "..."
+                },
+                "price": {
+                  "type": "number",
+                  "format": "float",
+                  "description": "..."
+                },
+                "date": {
+                  "type": "string",
+                  "format": "date",
+                  "description": "..."
+                },
+                "time": {
+                  "type": "string",
+                  "description": "Frühstück / Mittags"
+                },
+                "main_offer": {
+                  "type": "boolean",
+                  "description": "Main meal or side dish. Side dishes would be a salad or a soup, eggs in the morning, ..."
+                },
+                "vegetarian": {
+                  "type": "boolean",
+                  "description": "..."
+                },
+                "heat": {
+                  "type": "number",
+                  "description": "Describes the heat at which the offer was cooked. Needed for health governance"
+                }
+              }
+            }
+
+### /v0.2/offers/{offerid}
+
++ Parameters
+
+    + offerid (required)
+
+#### Get Offer [GET]
+
+Get a specific Order
+
++ Request
+
+    + Headers
+
+            Accept: application/json
+            x-auth-username: 
+
+    + Body
+
++ Response 200 (application/json)
+
+    Get one offer by ID
+
+    + Body
+
+    + Schema
+
+            {
+              "type": "object",
+              "description": "A description for an offer, usually a dish, salad, etc.",
+              "required": [
+                "description",
+                "price",
+                "time",
+                "main_offer",
+                "vegetarian",
+                "heat",
+                "date"
+              ],
+              "properties": {
+                "description": {
+                  "type": "string",
+                  "description": "..."
+                },
+                "_id": {
+                  "type": "string",
+                  "description": "..."
+                },
+                "price": {
+                  "type": "number",
+                  "format": "float",
+                  "description": "..."
+                },
+                "date": {
+                  "type": "string",
+                  "format": "date",
+                  "description": "..."
+                },
+                "time": {
+                  "type": "string",
+                  "description": "Frühstück / Mittags"
+                },
+                "main_offer": {
+                  "type": "boolean",
+                  "description": "Main meal or side dish. Side dishes would be a salad or a soup, eggs in the morning, ..."
+                },
+                "vegetarian": {
+                  "type": "boolean",
+                  "description": "..."
+                },
+                "heat": {
+                  "type": "number",
+                  "description": "Describes the heat at which the offer was cooked. Needed for health governance"
+                }
+              }
+            }
+
+#### Update Offer [PUT]
+
+Updates the Offer specified by the ID in the path
+
++ Request
+
+    + Headers
+
+            Accept: application/json
+            x-auth-username: 
+
+    + Body
+
+    + Schema
+
+            {
+              "type": "object",
+              "description": "A description for an offer, usually a dish, salad, etc.",
+              "required": [
+                "description",
+                "price",
+                "time",
+                "main_offer",
+                "vegetarian",
+                "heat",
+                "date"
+              ],
+              "properties": {
+                "description": {
+                  "type": "string",
+                  "description": "..."
+                },
+                "_id": {
+                  "type": "string",
+                  "description": "..."
+                },
+                "price": {
+                  "type": "number",
+                  "format": "float",
+                  "description": "..."
+                },
+                "date": {
+                  "type": "string",
+                  "format": "date",
+                  "description": "..."
+                },
+                "time": {
+                  "type": "string",
+                  "description": "Frühstück / Mittags"
+                },
+                "main_offer": {
+                  "type": "boolean",
+                  "description": "Main meal or side dish. Side dishes would be a salad or a soup, eggs in the morning, ..."
+                },
+                "vegetarian": {
+                  "type": "boolean",
+                  "description": "..."
+                },
+                "heat": {
+                  "type": "number",
+                  "description": "Describes the heat at which the offer was cooked. Needed for health governance"
+                }
+              }
+            }
+
++ Response 200 (application/json)
+
+    The updated Object
+
+    + Body
+
+    + Schema
+
+            {
+              "type": "object",
+              "description": "A description for an offer, usually a dish, salad, etc.",
+              "required": [
+                "description",
+                "price",
+                "time",
+                "main_offer",
+                "vegetarian",
+                "heat",
+                "date"
+              ],
+              "properties": {
+                "description": {
+                  "type": "string",
+                  "description": "..."
+                },
+                "_id": {
+                  "type": "string",
+                  "description": "..."
+                },
+                "price": {
+                  "type": "number",
+                  "format": "float",
+                  "description": "..."
+                },
+                "date": {
+                  "type": "string",
+                  "format": "date",
+                  "description": "..."
+                },
+                "time": {
+                  "type": "string",
+                  "description": "Frühstück / Mittags"
+                },
+                "main_offer": {
+                  "type": "boolean",
+                  "description": "Main meal or side dish. Side dishes would be a salad or a soup, eggs in the morning, ..."
+                },
+                "vegetarian": {
+                  "type": "boolean",
+                  "description": "..."
+                },
+                "heat": {
+                  "type": "number",
+                  "description": "Describes the heat at which the offer was cooked. Needed for health governance"
+                }
+              }
+            }
+
+#### Delete Offer [DELETE]
+
+Deletes the Offer specified by the ID in the path
+
++ Request
+
+    + Headers
+
+            Accept: application/json
+            x-auth-username: 
+
+    + Body
+
++ Response 204 (application/json)
+
+    Empty
+
+    + Body
+
